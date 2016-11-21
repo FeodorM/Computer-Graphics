@@ -1,24 +1,23 @@
 from typing import Sequence
-
+from numbers import Number
 from tabulate import tabulate
 
 
-class Matrix:
+class Matrix(Sequence):
     def __init__(self, matrix: Sequence[Sequence[float]]):
         assert (isinstance(matrix, Sequence) and
-                isinstance(matrix, Sequence) and
-                all(len(matrix) == len(row) for row in matrix)), "Wrong data"
+                isinstance(matrix, Sequence)), "Wrong data"
         self.__matrix = [[float(x) for x in row] for row in matrix]
 
     @staticmethod
-    def one(size: int):
+    def one(rows: int, columns: int):
         return [
-            [1 if i == j else 0 for j in range(size)] for i in range(size)
+            [1 if i == j else 0 for j in range(columns)] for i in range(rows)
         ]
 
     @staticmethod
-    def zero(size):
-        return [[0] * size for _ in range(size)]
+    def zero(rows: int, columns: int):
+        return [[0] * columns for _ in range(rows)]
 
     def __repr__(self):
         return 'Matrix({})'.format(self.__matrix)
@@ -37,11 +36,12 @@ class Matrix:
 
     def __mul__(self, other):
         assert isinstance(other, Sequence)
+        # Количество столбцов равно количеству строк / элементов
+        assert len(self.__matrix[0]) == len(other), "Wrong data"
         if isinstance(other[0], Sequence):
-            assert all(len(other) == len(row) for row in other), "Each row should have same length"
             return Matrix([
                 [
-                    sum(self[i][k] * other[k][j] for k in range(len(self))) for j in range(len(self))
+                    sum(self[i][k] * other[k][j] for k in range(len(other))) for j in range(len(other[0]))
                 ] for i in range(len(self))
             ])
         else:
@@ -49,12 +49,20 @@ class Matrix:
                 sum(x * y for x, y in zip(row, other)) for row in self
             ]
 
+    def __rmul__(self, other):
+        assert isinstance(other, Number)
+        return Matrix([
+            [other * x for x in row] for row in self.__matrix
+        ])
+
     def __add__(self, other):
+        # and all(len(other) == len(row) for row in other)), "Wrong data"
         assert (isinstance(other, Sequence) and
                 isinstance(other[0], Sequence) and
-                all(len(other) == len(row) for row in other)), "Wrong data"
+                len(self) == len(other) and
+                len(self[0]) == len(other[0])), "Wrong data"
         return Matrix([
-            [x + y for x, y in zip(r1, r2)] for r1, r2 in zip(self, other)
+            [x + y for x, y in zip(r1, r2)] for r1, r2 in zip(self.__matrix, other)
         ])
 
     def __neg__(self):
@@ -70,7 +78,14 @@ class Matrix:
             [x - y for x, y in zip(r1, r2)] for r1, r2 in zip(self, other)
         ])
 
+    @property
+    def shape(self):
+        return len(self.__matrix), len(self.__matrix[0])
+
 
 if __name__ == '__main__':
-    m = Matrix([[1, 2], [2, 3]])
-    print(m * [1, 1])
+    m = Matrix([[1, 2, 1], [2, 3, 0]])
+    a = Matrix([[1, 0, 0], [2, 1, 0], [1, 1, 0]])
+    print(m, m.shape)
+    print(a, a.shape)
+    print(m * a)
