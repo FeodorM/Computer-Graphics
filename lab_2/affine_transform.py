@@ -20,7 +20,7 @@ def rotation(phi, psi=None):
             [0,  0, 1]
         ])
     else:
-        Matrix([
+        return Matrix([
             [phi, -psi, 0],
             [psi, phi,  0],
             [0,   0,    1]
