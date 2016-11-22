@@ -20,6 +20,9 @@ def rotation(phi, psi=None):
             [0,  0, 1]
         ])
     else:
+        den = (phi ** 2 + psi ** 2) ** .5
+        phi /= den
+        psi /= den
         return Matrix([
             [phi, -psi, 0],
             [psi, phi,  0],
