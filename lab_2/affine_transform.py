@@ -30,7 +30,9 @@ def rotation(phi, psi=None):
         ])
 
 
-def scaling(kx, ky):
+def scaling(kx, ky=None):
+    if ky is None:
+        ky = kx
     return Matrix([
         [kx, 0, 0],
         [0, ky, 0],
