@@ -3,7 +3,7 @@ import math
 from OpenGL.GL import glMatrixMode, glLoadIdentity, glViewport, GL_PROJECTION
 from OpenGL.GLU import gluOrtho2D
 from lab_1.drawable import Drawable
-import pygame
+from util.events import *
 
 
 class Main:
@@ -20,23 +20,6 @@ class Main:
         self.resize()
 
         self.mainloop()
-
-    @staticmethod
-    def is_quit_event(event):
-        """True if "Esc" or "Close window" pressed"""
-        return event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE
-
-    @staticmethod
-    def is_zoom_in_event(event):
-        """True if plus pressed or wheel rolled up"""
-        return (event.type == pygame.KEYDOWN and event.key == pygame.K_KP_PLUS or
-                event.type == pygame.MOUSEBUTTONDOWN and event.button == 4)
-
-    @staticmethod
-    def is_zoom_out_event(event):
-        """True if minus pressed or wheel rolled down"""
-        return (event.type == pygame.KEYDOWN and event.key == pygame.K_KP_MINUS or
-                event.type == pygame.MOUSEBUTTONDOWN and event.button == 5)
 
     @staticmethod
     def change_plot_type_event(event):
@@ -64,7 +47,7 @@ class Main:
     def mainloop(self):
         while True:
             for event in pygame.event.get():
-                if self.is_quit_event(event):
+                if is_quit_event(event):
                     pygame.quit()
                     quit()
                 elif event.type == pygame.VIDEORESIZE:
@@ -72,9 +55,9 @@ class Main:
                     self.resize()
                     self.drawable.set_width_height(event.size)
                     self.drawable.same_scale()
-                elif self.is_zoom_in_event(event):
+                elif is_zoom_in_event(event):
                     self.drawable.rescale(pygame.mouse.get_pos(), 11 / 10)
-                elif self.is_zoom_out_event(event):
+                elif is_zoom_out_event(event):
                     self.drawable.rescale(pygame.mouse.get_pos(), 10 / 11)
                 elif self.change_plot_type_event(event):
                         self.elliptical = not self.elliptical
