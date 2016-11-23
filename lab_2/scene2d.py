@@ -45,17 +45,18 @@ class Scene2D(lab_2.camera2d.Camera2D):
         if keyboard_pressed_buttons[K_DOWN]:
             self.model.apply(translation(0, -0.01))
         if keyboard_pressed_buttons[K_SPACE]:
-            self.model.apply(rotation(.1))
+            x, y = self.model.center
+            self.model.apply(translation(x, y) * rotation(.1) * translation(-x, -y))
 
         # If left mouse button pressed, move plot
-        if mouse_pressed_buttons[0]:
-            self.model.apply(translation(self._x_screen_to_world(mouse_shift[0]), self._y_screen_to_world(mouse_shift[1])))
+        # if mouse_pressed_buttons[0]:
+        #     self.model.apply(translation(self._x_screen_to_world(mouse_shift[0]), -self._y_screen_to_world(mouse_shift[1])))
 
     def scale(self, k):
         x, y = pygame.mouse.get_pos()
         x = self._x_screen_to_world(x)
-        y = self._x_screen_to_world(y)
-        self.model.apply_many((translation(-x, -y), scaling(k), translation(x, y)))
+        y = self._y_screen_to_world(y)
+        self.model.apply(translation(x, y) * scaling(k) * translation(-x, -y))
 
     def mainloop(self):
         while True:
@@ -64,11 +65,10 @@ class Scene2D(lab_2.camera2d.Camera2D):
                     pygame.quit()
                     quit()
                 elif event.type == VIDEORESIZE:
-                    self.W, self.H = event.size
                     self.set_width_height(event.size)
                     self.same_scale()
-                elif event.type == KEYDOWN and event.key == K_SPACE:
-                    self.model.apply(translation(.1, .1))
+                # elif event.type == KEYDOWN and event.key == K_SPACE:
+                #     self.model.apply(translation(.1, .1))
                 elif event.type == KEYDOWN and event.key == K_KP_PLUS:
                     self.model.apply(scaling(11 / 10))
                 elif event.type == KEYDOWN and event.key == K_KP_MINUS:
