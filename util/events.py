@@ -3,7 +3,9 @@ import pygame
 
 def is_quit_event(event):
     """True if "Esc" or "Close window" pressed"""
-    return event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE
+    return (event.type == pygame.QUIT or
+            event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE or
+            event.type == pygame.KEYDOWN and event.key == pygame.K_q)
 
 
 def is_zoom_in_event(event):
