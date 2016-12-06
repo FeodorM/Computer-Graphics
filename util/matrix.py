@@ -86,6 +86,6 @@ class Matrix(Sequence):
 if __name__ == '__main__':
     m = Matrix([[1, 2, 1], [2, 3, 0]])
     a = Matrix([[1, 0, 0], [2, 1, 0], [1, 1, 0]])
-    print(m, m.shape)
-    print(a, a.shape)
+    # print(m, m.shape)
+    # print(a, a.shape)
     print(m * a)
