@@ -14,22 +14,10 @@ class Scene2D(lab_2.camera2d.Camera2D):
         self.mainloop()
 
     def draw_model(self):
-        vertices = self.model.vertices
-
-        # glBegin(GL_LINES)
-
         for edge in self.model.edges:
-            # for vertex in edge:
-                x0 = vertices[0][edge[0]] / vertices[2][edge[0]]
-                y0 = vertices[1][edge[0]] / vertices[2][edge[0]]
-
-                x1 = vertices[0][edge[1]] / vertices[2][edge[1]]
-                y1 = vertices[1][edge[1]] / vertices[2][edge[1]]
-
-                self.draw_line(x0, y0, x1, y1)
-                # glVertex2f(x, y)
-
-        # glEnd()
+            x0, y0 = self.model[edge[0]]
+            x1, y1 = self.model[edge[1]]
+            self.draw_line(x0, y0, x1, y1)
 
     def input(self):
         mouse_pressed_buttons = pygame.mouse.get_pressed()
