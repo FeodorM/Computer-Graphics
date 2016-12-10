@@ -13,7 +13,7 @@ class Camera2D:
     # c -- коэффициент в эллиптической системе координат.
     """
     # noinspection PyShadowingNames
-    def __init__(self, left: float = -2, right: float = 2, bottom: float = -2, top: float = 2,
+    def __init__(self, title: str = "Lab 2", left: float = -2, right: float = 2, bottom: float = -2, top: float = 2,
                  width: int = 600, height: int = 600):
         self.R = right
         self.B = bottom
@@ -25,7 +25,7 @@ class Camera2D:
 
         pygame.init()
         pygame.display.set_mode((self.W, self.H), pygame.OPENGL | pygame.DOUBLEBUF | pygame.RESIZABLE)
-        pygame.display.set_caption("Lab 1")
+        pygame.display.set_caption(title)
 
         self.resize_window()
 
