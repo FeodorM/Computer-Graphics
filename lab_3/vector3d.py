@@ -29,9 +29,6 @@ class Vector:
 
     @property
     def norm(self):
-        return len(self)
-
-    def __len__(self):
         return (self.x * self.x + self.y * self.y + self.z * self.z) ** .5
 
     def __mul__(self, other):
