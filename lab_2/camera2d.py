@@ -62,7 +62,7 @@ class Camera2D:
         glBegin(GL_LINES)
 
         glVertex2f(self._x_world_to_screen(0), self._y_world_to_screen(self.B))
-        glVertex2f(self._x_world_to_screen(0), self._y_world_to_screen(self.T))
+        glVertex2f(self._x_world_to_screen(0), self._y_world_to_screen(self.Top))
 
         glVertex2f(self._x_world_to_screen(self.L), self._y_world_to_screen(0))
         glVertex2f(self._x_world_to_screen(self.R), self._y_world_to_screen(0))
@@ -75,8 +75,8 @@ class Camera2D:
     def draw_line(self, x0, y0, x1, y1):
         glBegin(GL_LINES)
 
-        glVertex2f(self._x_world_to_screen(x0), self._y_world_to_screen(y0))
-        glVertex2f(self._x_world_to_screen(x1), self._y_world_to_screen(y1))
+        glVertex2i(self._x_world_to_screen(x0), self._y_world_to_screen(y0))
+        glVertex2i(self._x_world_to_screen(x1), self._y_world_to_screen(y1))
 
         glEnd()
 
