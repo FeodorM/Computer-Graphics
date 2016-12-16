@@ -1,12 +1,16 @@
+from time import sleep
+
 from util.matrix import Matrix
 
 
 class Model3D:
-    def __init__(self, vertices_file: str = None, verges_file: str = None, world_to_project_matrix: Matrix = None):
+    def __init__(self, vertices_file: str = None, verges_file: str = None,
+                 invisible_edges_file: str = None, world_to_project_matrix: Matrix = None):
         self.vertices = [[], [], [], []]
         self.verges = []
         self.edges = []
         self.project_vertices = None
+        self.invisible_edges_filename = invisible_edges_file
 
         if vertices_file is not None:
             self.load_vertices_from_file(vertices_file)
@@ -17,7 +21,12 @@ class Model3D:
                 self.calc_project_vertices(world_to_project_matrix)
 
     def __getitem__(self, item):
-        den = 1 / self.project_vertices[2][item]
+        try:
+            den = 1 / self.project_vertices[2][item]
+        except ZeroDivisionError:
+            # print(self.project_vertices)
+            # print(self.vertices)
+            sleep(1)
         return self.project_vertices[0][item] * den, self.project_vertices[1][item] * den
 
     @staticmethod
@@ -36,6 +45,8 @@ class Model3D:
                 if self.line_to_skip(line):
                     continue
                 self.add_vertex(tuple(map(float, line.strip().split())))
+        # for _ in range(2000):
+        #     self.add_vertex((0, 0, 0))
 
     def load_verges_from_file(self, filename: str):
         with open(filename) as f:
@@ -46,15 +57,21 @@ class Model3D:
         self.load_edges_from_verges()
 
     def load_edges_from_verges(self):
+        with open(self.invisible_edges_filename) as f:
+            invis = set()
+            for line in f:
+                invis.add(tuple(map(int, line.strip().split())))
         edges = set()
         for verge in self.verges:
             edges.add((verge[0], verge[1]))
             edges.add((verge[1], verge[2]))
             edges.add((verge[2], verge[0]))
+        edges = edges - invis
         self.edges.extend(list(edges))
 
     def calc_project_vertices(self, matrix):
         self.project_vertices = matrix * self.vertices
+        # print(matrix)
 
     def apply(self, affine_transform: Matrix, world_to_project_matrix: Matrix):
         self.vertices = affine_transform * self.vertices
@@ -62,4 +79,5 @@ class Model3D:
 
     @property
     def center(self):
-        return self[0]
+        den = 1 / self.vertices[3][0]
+        return self.vertices[0][0] * den, self.vertices[1][0] * den, self.vertices[2][0] * den
