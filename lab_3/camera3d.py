@@ -10,7 +10,7 @@ class Camera3D(Camera2D):
                  left: float = -2, right: float = 2,
                  bottom: float = -2, top: float = 2,
                  width: int = 600, height: int = 600,
-                 screen_center: Vector = Vector(0, 0, -3), normal: Vector = Vector(0, 0, 1),
+                 screen_center: Vector = Vector(0, 0, -5), normal: Vector = Vector(0, 0, 1),
                  top_direction: Vector = Vector(0, 1, 0), distance: float = 10):
         super().__init__(title, left, right, bottom, top, width, height)
 
@@ -22,6 +22,12 @@ class Camera3D(Camera2D):
         self.__S_w_to_v = None
         self.__S_v_to_p = None
         self.__S_w_to_p = None
+        self._calc_matrices()
+
+    def set_distance(self, new_d):
+        if new_d <= 0:
+            return
+        self.D = new_d
         self._calc_matrices()
 
     @property
@@ -52,3 +58,7 @@ class Camera3D(Camera2D):
             [0, 0, -1 / self.D, 1]
         ])
         self.__S_w_to_p = self.__S_v_to_p * self.__S_w_to_v
+        # print(self.world_to_view)
+        # print(self.view_to_project)
+        # print(self.world_to_project)
+        # print(self.D)
