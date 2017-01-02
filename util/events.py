@@ -18,3 +18,8 @@ def is_zoom_out_event(event):
     """True if minus pressed or wheel rolled down"""
     return (event.type == pygame.KEYDOWN and event.key == pygame.K_KP_MINUS or
             event.type == pygame.MOUSEBUTTONDOWN and event.button == 5)
+
+
+def is_screen_resize_event(event):
+    """True if screen was resized"""
+    return event.type == pygame.VIDEORESIZE
