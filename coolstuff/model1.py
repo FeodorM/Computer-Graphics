@@ -12,8 +12,9 @@ def update_model(func):
 
 
 class Model1(BaseModel):
+    def __init__(self, vertices_file: str = None, edges_file: str = None):
+        super().__init__(vertices_file, edges_file)
 
-    def _init(self):
         self.x_p = 0
         self.y_p = 0
         self.alpha = 0

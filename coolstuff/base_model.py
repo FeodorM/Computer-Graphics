@@ -9,11 +9,6 @@ class BaseModel:
         if edges_file is not None:
             self.load_edges_from_file(edges_file)
 
-        self._init()
-
-    def _init(self):
-        raise NotImplementedError()
-
     def __getitem__(self, item):
         den = 1 / self.vertices_current[2][item]
         return self.vertices_current[0][item] * den, self.vertices_current[1][item] * den
