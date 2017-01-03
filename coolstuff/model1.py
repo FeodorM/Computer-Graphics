@@ -21,7 +21,6 @@ class Model1(BaseModel):
         self.kx = 1
         self.ky = 1
 
-        self.vertices_current = None
         self._calc_current_vertices()
 
     def _calc_current_vertices(self):

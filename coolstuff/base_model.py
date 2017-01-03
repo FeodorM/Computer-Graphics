@@ -1,6 +1,7 @@
 class BaseModel:
     def __init__(self, vertices_file: str = None, edges_file: str = None):
         self.vertices_initial = [[], [], []]
+        self.vertices_current = None
         self.edges = []
 
         if vertices_file is not None:
